@@ -1,0 +1,131 @@
+% credits.sty
+%
+% This package permits creating simple contributor statements, as
+% proposed by CRediT, the contributor roles taxonomy. The initial
+% version of this taxonomy was inspired by Dan O'Shea (@djoshea).
+%
+% Copyright 2023 Bastian Rieck
+%
+% Redistribution and use in source and binary forms, with or without
+% modification, are permitted provided that the following conditions are
+% met:
+%
+% 1. Redistributions of source code must retain the above copyright
+%    notice, this list of conditions and the following disclaimer.
+%
+% 2. Redistributions in binary form must reproduce the above copyright
+%    notice, this list of conditions and the following disclaimer in the
+%    documentation and/or other materials provided with the
+%    distribution.
+%
+% 3. Neither the name of the copyright holder nor the names of its
+%    contributors may be used to endorse or promote products derived
+%    from this software without specific prior written permission.
+%
+% THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+% “AS IS” AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+% LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+% A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+% HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+% SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+% LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+% DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+% THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+% (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+% OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{credits}[2023/02/21 LaTeX package for contributor statements following CRediT, the contributor roles taxonomy]
+
+\RequirePackage{kvoptions}
+\RequirePackage{tikz}
+
+\SetupKeyvalOptions{%
+  family = CREDITS,
+  prefix = CREDITS@
+}
+
+\DeclareStringOption[black]{role}
+\DeclareStringOption[white]{grid}
+
+\ProcessKeyvalOptions*
+
+\usetikzlibrary{calc}
+\usetikzlibrary{intersections}
+
+\let\credits\relax
+
+\newcommand{\credit}[2]{%
+  \ifx\credits\relax%
+  \def\credits{#1/{#2}}%
+  \else%
+    \xdef\credits{\credits,#1/{#2}}%
+  \fi%
+}
+
+\tikzset{
+    /credits/tile/.style = {
+        align=center,
+        minimum size=5mm,
+        anchor=north west,
+    },
+    %
+    /credits/author/.style = {%
+      anchor = north west,
+      rotate = 45,
+      %
+      xshift = -2.5mm,
+      yshift = -1.0mm,
+    },
+    %
+    /credits/concept/.style = {%
+      anchor = north east,
+      xshift = 5mm,
+    },
+}
+
+\newcommand{\insertcredits}{%
+  \begin{tikzpicture}[scale = 0.5]
+    \tikzset{%
+      author/.style  = /credits/author,
+      concept/.style = /credits/concept,
+      tile/.style    = /credits/tile,
+    }
+
+    \foreach \concept [count = \i] in {%
+      Conceptualization,
+      Data curation,
+      Formal analysis,
+      Funding acquisition,
+      Investigation,
+      Methodology,
+      Project administration,
+      Resources,
+      Software,
+      Supervision,
+      Validation,
+      Visualization,
+      Writing -- original draft,
+      Writing -- review \& editing,
+    }%
+    {%
+      \node[concept] at (0,-\i) {\concept};
+    }
+
+    \foreach \name/\column [count=\n] in \credits {%
+      % Put an author label here. If you want to *rotate* names in
+      % a different way because you are using abbreviations, it is
+      % sufficient to update the `author` style.
+      \node[author] at (\n, 0) {\name};
+      %
+      \foreach \entry [count = \m] in \column {%
+
+        \pgfmathparse{\entry*100}
+        \colorlet{fill}{\CREDITS@role!\pgfmathresult}
+        \colorlet{grid}{\CREDITS@grid}
+
+        \node[fill = fill, draw = grid, tile] (tile) at (\n, -\m) {};
+      }%
+    }%
+  \end{tikzpicture}
+}
