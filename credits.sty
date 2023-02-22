@@ -108,7 +108,7 @@
       Validation,
       Visualization,
       Writing -- original draft,
-      Writing -- review \& editing,
+      Writing -- review \& editing
     }%
     {%
       \node[concept] at (0,-\i) {\concept};
@@ -151,13 +151,13 @@
     Validation,
     Visualization,
     Writing -- original draft,
-    Writing -- review \& editing,
+    Writing -- review \& editing
   }{%
       {\concept: }%
       \foreach \name/\column [count=\n] in \credits {%
         \foreach \entry [count=\m] in \column {%
           \ifthenelse{\i = \m}{%
-            \pgfmathparse{\entry > 0 ? "\name\ "  : ""}
+            \pgfmathparse{\entry > 0 ? "\name\ " : ""}
             \pgfmathresult
           }%
           {}%
