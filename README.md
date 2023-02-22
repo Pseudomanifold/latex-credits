@@ -40,10 +40,19 @@ conceptualisation, you could use the following command:
 \credit{Alice}{1,0,0,0,0,0,0,0,0,0,0,0,1,1}
 ```
 
-To add a statement about this contributions to the text, use the
+Suppose you have a second author that did everything *but* the writing
+and conceptualisation. You would add such an author using this command:
+
+```latex
+\credit{Eve}{0,1,1,1,1,1,1,1,1,1,1,1,0,0}
+```
+
+To add a statement about these contributions to the text, use the
 `\insertcredits` command. The visualisation will be embedded in
 a `tikzpicture` environment so it can be added in-place; it does not
-make use of any floats.
+make use of any floats. This is how the statement will look by default:
+
+![Example contributor taxonomy with default colours](example_default.png)
 
 ## Example
 
@@ -95,7 +104,7 @@ example can also be found in [example.tex](example.tex)):
 
 This results in the following output:
 
-![Example contributor taxonomy](./example.png)
+![Example contributor taxonomy with custom colours](example_custom.png)
 
 ## License
 
