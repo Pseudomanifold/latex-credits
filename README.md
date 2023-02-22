@@ -52,6 +52,10 @@ example can also be found in [example.tex](example.tex)):
 \end{document}
 ```
 
+This results in the following output:
+
+![Example contributor taxonomy](./example.png)
+
 ## License
 
 The package is licensed using a BSD 3-Clause license. See [the license
