@@ -132,11 +132,12 @@
   \end{tikzpicture}
 }
 
-\pgfkeys{%
-  /contributions/2/.initial = {I}
-}
+% Required to ensure that we can count active concepts later on when
+% generating text statements.
+\newcounter{CREDITS@concepts}
 
 \newcommand{\insertcreditsstatement}{%
+
   \foreach \concept [count = \i] in {%
     Conceptualization,
     Data curation,
@@ -153,19 +154,41 @@
     Writing -- original draft,
     Writing -- review \& editing
   }{%
-      {\concept: }%
-      \foreach \name/\column [count=\n] in \credits {%
-        \foreach \entry [count=\m] in \column {%
-          \ifthenelse{\i = \m}{%
-            \pgfmathparse{\entry > 0 ? "\name\ " : ""}
-            \pgfmathresult
-          }%
-          {}%
+    \setcounter{CREDITS@concepts}{0}%
+    \foreach \name/\column [count=\n] in \credits {%
+      \foreach \entry [count=\m] in \column {%
+        \ifthenelse{\i = \m}{%
+          \pgfmathparse{\entry > 0 ? 1 : 0}%
+          \ifthenelse{\pgfmathresult > 0}{%
+            \addtocounter{CREDITS@concepts}{1}%
+          }{}%
         }%
+        {}%
       }%
-      \ifthenelse{\i < 14}{%
-        ;
+    }%
+    %
+    {\concept: }%
+    \foreach \name/\column [count=\n] in \credits {%
+      \foreach \entry [count=\m] in \column {%
+        \ifthenelse{\i = \m}{%
+          \pgfmathparse{\entry > 0 ? "\name" : ""}
+          \pgfmathresult%
+          \ifthenelse{\equal{\pgfmathresult}{}}{%
+          }{%
+            \ifnum\value{CREDITS@concepts} > 1%
+              \pgfmathparse{\value{CREDITS@concepts} - \n > 0 ? 1 : 0}%
+              \ifnum\pgfmathresult = 1
+                ,
+               \fi
+            \fi%
+          }%
+        }%
+        {}%
       }%
-      {}%
-  }
+    }%
+    \ifthenelse{\i < 14}{%
+      ;
+    }%
+    {}%
+  }%
 }
