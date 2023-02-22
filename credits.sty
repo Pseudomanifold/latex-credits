@@ -137,7 +137,6 @@
 \newcounter{CREDITS@concepts}
 
 \newcommand{\insertcreditsstatement}{%
-
   \foreach \concept [count = \i] in {%
     Conceptualization,
     Data curation,
@@ -166,7 +165,6 @@
         {}%
       }%
     }%
-    %
     {\concept: }%
     \foreach \name/\column [count=\n] in \credits {%
       \foreach \entry [count=\m] in \column {%
@@ -179,7 +177,7 @@
               \pgfmathparse{\value{CREDITS@concepts} - \n > 0 ? 1 : 0}%
               \ifnum\pgfmathresult = 1
                 ,
-               \fi
+               \fi%
             \fi%
           }%
         }%
