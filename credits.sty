@@ -37,7 +37,9 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesPackage{credits}[2023/02/21 LaTeX package for contributor statements following CRediT, the contributor roles taxonomy]
 
+\RequirePackage{ifthen}
 \RequirePackage{kvoptions}
+\RequirePackage{pgfkeys}
 \RequirePackage{tikz}
 
 \SetupKeyvalOptions{%
@@ -128,4 +130,43 @@
       }%
     }%
   \end{tikzpicture}
+}
+
+\pgfkeys{%
+  /contributions/2/.initial = {I}
+}
+
+\newcommand{\insertcreditsstatement}{%
+
+  \foreach \concept [count = \i] in {%
+    Conceptualization,
+    Data curation,
+    Formal analysis,
+    Funding acquisition,
+    Investigation,
+    Methodology,
+    Project administration,
+    Resources,
+    Software,
+    Supervision,
+    Validation,
+    Visualization,
+    Writing -- original draft,
+    Writing -- review \& editing,
+  }{%
+      {\concept: }%
+      \foreach \name/\column [count=\n] in \credits {%
+        \foreach \entry [count=\m] in \column {%
+          \ifthenelse{\i = \m}{%
+            \pgfmathparse{\entry > 0 ? "\name\ "  : ""}
+            \pgfmathresult
+          }%
+          {}%
+        }%
+      }%
+      \ifthenelse{\i < 14}{%
+        ;
+      }%
+      {}%
+  }
 }
