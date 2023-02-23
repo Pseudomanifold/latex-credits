@@ -109,7 +109,7 @@
       Validation,
       Visualization,
       Writing -- original draft,
-      Writing -- review \& editing
+      Writing -- review \& editing%
     }%
     {%
       \node[concept] at (0,-\i) {\concept};
@@ -152,7 +152,7 @@
     Validation,
     Visualization,
     Writing -- original draft,
-    Writing -- review \& editing
+    Writing -- review \& editing%
   }{%
     \setcounter{CREDITS@concepts}{0}%
     \foreach \name/\column [count=\n] in \credits {%
@@ -166,7 +166,7 @@
         {}%
       }%
     }%
-    {\concept: }%
+    {\bfseries\concept: }%
     \foreach \name/\column [count=\n] in \credits {%
       \foreach \entry [count=\m] in \column {%
         \ifthenelse{\i = \m}{%
@@ -186,7 +186,7 @@
       }%
     }%
     \ifthenelse{\i < 14}{%
-      \CREDITS@separator{} 
+      \CREDITS@separator{}
     }%
     {}%
   }%
