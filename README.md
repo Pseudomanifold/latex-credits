@@ -59,7 +59,7 @@ contributors. Just use the `\insertcreditsstatement` command. Here is
 how such a statement will be formatted (notice that author names have
 been slightly changed):
 
-![Example contributor text statement with default colours](example_default.png)
+![Example contributor text statement](example_text_default.png)
 
 ## Example
 
@@ -129,7 +129,7 @@ If you are only interested in the textual statement, you can use the
 Use `\insertcreditsstatement` to place your textual statement anywhere.
 Similar to the visual statement, this environment does not create a new
 group or float; it can be readily added to *any* text environment. You
-can find the full example in [example_text](example_text.tex).
+can find the full example in [example_text.tex](example_text.tex).
 
 ## FAQ
 
