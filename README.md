@@ -136,17 +136,17 @@ can find the full example in [example_text.tex](example_text.tex).
 To be more precise, this is a list of *anticipated* questions. No one
 actually asked any of these questions.
 
-1. How can I contribute to this project?\
+1. *How can I contribute to this project?*\
    \
    Simple: open an issue or clone the repository and send me a pull
    request. All contributions are welcome!
 
-2. The LaTeX code is horrible!\
+2. *The LaTeX code is horrible!*\
    \
    Technically, this is not a question. Also: yes, agreed. Consider
    improving it by opening a pull request.
 
-3. Can you support a certain style or certain feature?\
+3. *Can you support a certain style or certain feature?*\
    \
    Maybe! Open an issue and let me know what you are interested in.
 
