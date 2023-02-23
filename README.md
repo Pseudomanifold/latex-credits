@@ -128,7 +128,8 @@ If you are only interested in the textual statement, you can use the
 
 Use `\insertcreditsstatement` to place your textual statement anywhere.
 Similar to the visual statement, this environment does not create a new
-group or float; it can be readily added to *any* text environment.
+group or float; it can be readily added to *any* text environment. You
+can find the full example in [example_text](example_text.tex).
 
 ## FAQ
 
