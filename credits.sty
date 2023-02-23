@@ -49,6 +49,7 @@
 
 \DeclareStringOption[black]{role}
 \DeclareStringOption[white]{grid}
+\DeclareStringOption[;]    {separator}
 
 \ProcessKeyvalOptions*
 
@@ -185,7 +186,7 @@
       }%
     }%
     \ifthenelse{\i < 14}{%
-      ;
+      \CREDITS@separator{} 
     }%
     {}%
   }%
