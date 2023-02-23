@@ -1,0 +1,30 @@
+\documentclass{article}
+
+\usepackage[separator = {;}]{credits}
+
+% The ordering of the values indicates the ordering of the original
+% taxonomy, i.e.:
+%
+% - Conceptualization
+% - Data curation
+% - Formal analysis
+% - Funding acquisition
+% - Investigation
+% - Methodology
+% - Project administration
+% - Resources
+% - Software
+% - Supervision
+% - Validation
+% - Visualization
+% - Writing -- original draft
+% - Writing -- review \& editing
+\credit{A.B.}{1,1,1,1,1,1,1,1,1,1,1,1,1,1}
+\credit{B.C.}{0,1,0,1,0,1,0,1,0,1,0,1,0,1}
+\credit{E.F.}{0,0.5,1,0,0,0,0,0,1,0,0,1,0,0}
+
+\begin{document}
+  % Notice that for the textual statement, partially-scaled values will
+  % be ignored. Any non-zero value will be treated as a contribution.
+  \noindent\insertcreditsstatement
+\end{document}
