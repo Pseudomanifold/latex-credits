@@ -52,7 +52,14 @@ To add a statement about these contributions to the text, use the
 a `tikzpicture` environment so it can be added in-place; it does not
 make use of any floats. This is how the statement will look by default:
 
-![Example contributor taxonomy with default colours](example_default.png)
+![Example contributor roles with default colours](example_default.png)
+
+There is also the option to generate a text statement about
+contributors. Just use the `\insertcreditsstatement` command. Here is
+how such a statement will be formatted (notice that author names have
+been slightly changed):
+
+![Example contributor text statement with default colours](example_default.png)
 
 ## Example
 
@@ -105,6 +112,42 @@ example can also be found in [example.tex](example.tex)):
 This results in the following output:
 
 ![Example contributor taxonomy with custom colours](example_custom.png)
+
+If you are only interested in the textual statement, you can use the
+`separator` package option to slightly adjust its formatting.
+
+```latex
+% Default: separate individual concepts/roles by a semicolon. This seems
+% to be the de facto standard endorsed by many publishers.
+\usepackage[separator = {;}]{credits}
+
+% This would create a list of contributions. Personally, I do not like
+% this format too much.
+\usepackage[separator = {\newline}]credits}
+```
+
+Use `\insertcreditsstatement` to place your textual statement anywhere.
+Similar to the visual statement, this environment does not create a new
+group or float; it can be readily added to *any* text environment.
+
+## FAQ
+
+To be more precise, this is a list of *anticipated* questions. No one
+actually asked any of these questions.
+
+1. How can I contribute to this project?\
+   \
+   Simple: open an issue or clone the repository and send me a pull
+   request. All contributions are welcome!
+
+2. The LaTeX code is horrible!\
+   \
+   Technically, this is not a question. Also: yes, agreed. Consider
+   improving it by opening a pull request.
+
+3. Can you support a certain style or certain feature?\
+   \
+   Maybe! Open an issue and let me know what you are interested in.
 
 ## License
 
