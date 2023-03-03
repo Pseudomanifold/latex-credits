@@ -56,6 +56,23 @@
 \usetikzlibrary{calc}
 \usetikzlibrary{intersections}
 
+\def\concepts{%
+  Conceptualization,
+  Data curation,
+  Formal analysis,
+  Funding acquisition,
+  Investigation,
+  Methodology,
+  Project administration,
+  Resources,
+  Software,
+  Supervision,
+  Validation,
+  Visualization,
+  Writing -- original draft,
+  Writing -- review \& editing%
+}
+
 \let\credits\relax
 
 \newcommand{\credit}[2]{%
@@ -95,23 +112,7 @@
       tile/.style    = /credits/tile,
     }
 
-    \foreach \concept [count = \i] in {%
-      Conceptualization,
-      Data curation,
-      Formal analysis,
-      Funding acquisition,
-      Investigation,
-      Methodology,
-      Project administration,
-      Resources,
-      Software,
-      Supervision,
-      Validation,
-      Visualization,
-      Writing -- original draft,
-      Writing -- review \& editing%
-    }%
-    {%
+    \foreach \concept [count = \i] in \concepts {%
       \node[concept] at (0,-\i) {\concept};
     }
 
@@ -138,22 +139,7 @@
 \newcounter{CREDITS@concepts}
 
 \newcommand{\insertcreditsstatement}{%
-  \foreach \concept [count = \i] in {%
-    Conceptualization,
-    Data curation,
-    Formal analysis,
-    Funding acquisition,
-    Investigation,
-    Methodology,
-    Project administration,
-    Resources,
-    Software,
-    Supervision,
-    Validation,
-    Visualization,
-    Writing -- original draft,
-    Writing -- review \& editing%
-  }{%
+  \foreach \concept [count = \i] in \concepts {% 
     \setcounter{CREDITS@concepts}{0}%
     \foreach \name/\column [count=\n] in \credits {%
       \foreach \entry [count=\m] in \column {%
