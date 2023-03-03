@@ -113,6 +113,13 @@ This results in the following output:
 
 ![Example contributor taxonomy with custom colours](example_custom.png)
 
+By passing the `horizontal` key when loading the package, you can switch
+the ordering of rows and columns, essentially transposing the statement.
+
+```latex
+\usepackage[horizontal]{credits}
+```
+
 If you are only interested in the textual statement, you can use the
 `separator` package option to slightly adjust its formatting.
 
