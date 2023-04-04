@@ -157,6 +157,10 @@ actually asked any of these questions.
    \
    Maybe! Open an issue and let me know what you are interested in.
 
+## Package Users
+
+- [**Born et al.**, *Chemical representation learning for toxicity prediction*](https://pubs.rsc.org/en/content/articlelanding/2023/DD/D2DD00099G)
+
 ## License
 
 The package is licensed using a BSD 3-Clause license. See [the license
