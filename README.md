@@ -130,7 +130,7 @@ If you are only interested in the textual statement, you can use the
 
 % This would create a list of contributions. Personally, I do not like
 % this format too much.
-\usepackage[separator = {\newline}]credits}
+\usepackage[separator = {\newline}]{credits}
 ```
 
 Use `\insertcreditsstatement` to place your textual statement anywhere.
