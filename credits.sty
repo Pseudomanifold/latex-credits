@@ -166,10 +166,12 @@
 % Required to ensure that we can count active concepts later on when
 % generating text statements.
 \newcounter{CREDITS@concepts}
+\newcounter{CREDITSADDED@concepts}
 
 \newcommand{\insertcreditsstatement}{%
-  \foreach \concept [count = \i] in \concepts {% 
+  \foreach \concept [count = \i] in \concepts {%
     \setcounter{CREDITS@concepts}{0}%
+    \setcounter{CREDITSADDED@concepts}{0}%
     \foreach \name/\column [count=\n] in \credits {%
       \foreach \entry [count=\m] in \column {%
         \ifthenelse{\i = \m}{%
@@ -185,21 +187,27 @@
     \foreach \name/\column [count=\n] in \credits {%
       \foreach \entry [count=\m] in \column {%
         \ifthenelse{\i = \m}{%
-          \pgfmathparse{\entry > 0 ? "\name" : ""}
-          \pgfmathresult%
-          \ifthenelse{\equal{\pgfmathresult}{}}{%
-          }{%
-            \ifnum\value{CREDITS@concepts} > 1%
-              \pgfmathparse{\value{CREDITS@concepts} - \n > 0 ? 1 : 0}%
-              \ifnum\pgfmathresult = 1
-                ,
-               \fi%
-            \fi%
-          }%
+          % Check if the author contributed to the concept
+          % If so, add a comma before the author acronym
+          % Then add the author acronym
+          \pgfmathparse{\entry > 0 ? ", " : ""}%
+          % Add comma if there are >1 authors AND at least one author was already added
+          \ifnum\value{CREDITS@concepts} > 1
+            \ifnum\value{CREDITSADDED@concepts} > 0
+                \pgfmathresult
+            \fi
+          \fi
+          % Add the author acronym if they contributed to the concept
+          \pgfmathparse{\entry > 0 ? "\name" : ""}%
+          \pgfmathresult
+          \ifnum\entry > 0
+            \addtocounter{CREDITSADDED@concepts}{1}%
+        \fi
         }%
         {}%
       }%
     }%
+    % Only add a separator if this is not the last concept
     \ifthenelse{\i < 14}{%
       \CREDITS@separator{}
     }%
