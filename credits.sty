@@ -175,7 +175,7 @@
     \foreach \name/\column [count=\n] in \credits {%
       \foreach \entry [count=\m] in \column {%
         \ifthenelse{\i = \m}{%
-          \pgfmathparse{\entry > 0 ? 1 : 0}%
+          \pgfmathparse{int(\entry > 0 ? 1 : 0)}%
           \ifthenelse{\pgfmathresult > 0}{%
             \addtocounter{CREDITS@concepts}{1}%
           }{}%
@@ -184,25 +184,20 @@
       }%
     }%
     {\bfseries\concept: }%
+    % Initialize a counter for the number of authors for this concept
     \foreach \name/\column [count=\n] in \credits {%
       \foreach \entry [count=\m] in \column {%
         \ifthenelse{\i = \m}{%
           % Check if the author contributed to the concept
-          % If so, add a comma before the author acronym
-          % Then add the author acronym
-          \pgfmathparse{\entry > 0 ? ", " : ""}%
-          % Add comma if there are >1 authors AND at least one author was already added
-          \ifnum\value{CREDITS@concepts} > 1
-            \ifnum\value{CREDITSADDED@concepts} > 0
-                \pgfmathresult
-            \fi
-          \fi
+          % If yes, add a comma before the author acronym if >=1 author was already added
+          \pgfmathparse{int(\entry > 0) && \value{CREDITSADDED@concepts} > 0 && \value{CREDITS@concepts} > 1 ? ", " : ""}%
+          \pgfmathresult
           % Add the author acronym if they contributed to the concept
           \pgfmathparse{\entry > 0 ? "\name" : ""}%
           \pgfmathresult
-          \ifnum\entry > 0
-            \addtocounter{CREDITSADDED@concepts}{1}%
-        \fi
+          \ifdim\entry pt > 0pt
+              \addtocounter{CREDITSADDED@concepts}{1}%
+           \fi
         }%
         {}%
       }%
