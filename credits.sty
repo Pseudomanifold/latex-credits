@@ -48,6 +48,7 @@
 }
 
 \DeclareBoolOption{horizontal}
+\DeclareBoolOption{skipempty}
 
 \DeclareStringOption[black]{role}
 \DeclareStringOption[white]{grid}
@@ -122,6 +123,7 @@
 }
 \fi
 
+
 \newcommand{\insertcredits}{%
   \begin{tikzpicture}[scale = 0.5]
     \tikzset{%
@@ -130,14 +132,7 @@
       tile/.style    = /credits/tile,
     }
 
-    \foreach \concept [count = \i] in \concepts {%
-      \ifCREDITS@horizontal%
-        \node[concept] at (\i, 0) {\concept};
-      \else%
-        \node[concept] at (0, -\i) {\concept};
-      \fi%
-    }
-
+    % First draw the author names
     \foreach \name/\column [count=\n] in \credits {%
       % Put an author label here. If you want to *rotate* names in
       % a different way because you are using abbreviations, it is
@@ -147,21 +142,53 @@
       \else
         \node[author] at (\n, 0) {\name};
       \fi
-      %
-      \foreach \entry [count = \m] in \column {%
-        \pgfmathparse{\entry*100}
-        \colorlet{fill}{\CREDITS@role!\pgfmathresult}
-        \colorlet{grid}{\CREDITS@grid}
+    }
 
-        \ifCREDITS@horizontal
-          \node[fill = fill, draw = grid, tile] (tile) at (\m, -\n) {};
-        \else%
-          \node[fill = fill, draw = grid, tile] (tile) at (\n, -\m) {};
-        \fi
+    % Next, count the number of contributors per concept
+    \newcounter{row}
+    \foreach \concept [count = \i] in \concepts {%
+      \setcounter{CREDITS@concepts}{0}%
+      \foreach \name/\column in \credits {%
+        \foreach \entry [count=\m] in \column {%
+          \ifthenelse{\i = \m}{%
+            \pgfmathparse{\entry > 0 ? 1 : 0}%
+            \ifthenelse{\pgfmathresult > 0}{%
+              \addtocounter{CREDITS@concepts}{1}%
+            }{}%
+          }%
+          {}%
+        }%
       }%
+     % Add concept if >0 contributors or if we don't skip empty concepts
+     \pgfmathparse{\value{CREDITS@concepts}>0 || \ifCREDITS@skipempty 0\else 1\fi}
+     \ifnum\pgfmathresult=1\relax
+        \addtocounter{row}{1}
+        \ifCREDITS@horizontal%
+          \node[concept] at (\value{row}, 0) {\concept};
+        \else%
+          \node[concept] at (0, -\value{row}) {\concept};
+        \fi%
+      \fi
+        \foreach \name/\column [count=\n] in \credits {%
+          \foreach \entry [count = \m] in \column {%
+            \pgfmathparse{\entry*100}
+            \colorlet{fill}{\CREDITS@role!\pgfmathresult}
+            \colorlet{grid}{\CREDITS@grid}
+            \pgfmathparse{\value{CREDITS@concepts}>0 || \ifCREDITS@skipempty 0\else 1\fi && \m==\i ? 1 : 0}
+            \ifnum\pgfmathresult=1\relax
+                \ifCREDITS@horizontal
+                  \node[fill = fill, draw = grid, tile] (tile) at (\value{row}, -\n) {};
+                \else%
+                  \node[fill = fill, draw = grid, tile] (tile) at (\n, -\value{row}) {};
+                \fi
+              \fi
+            }
+        }%
     }%
   \end{tikzpicture}
 }
+
+
 
 % Required to ensure that we can count active concepts later on when
 % generating text statements.
@@ -184,6 +211,8 @@
         {}%
       }%
     }%
+    \pgfmathparse{\value{CREDITS@concepts}>0 || \ifCREDITS@skipempty 0\else 1\fi}
+    \ifnum\pgfmathresult=1\relax
     {\bfseries\concept: }%
     \foreach \name/\column [count=\n] in \credits {%
       \foreach \entry [count=\m] in \column {%
@@ -206,5 +235,6 @@
       \CREDITS@separator{}
     }%
     {}%
+    \fi
   }%
 }
