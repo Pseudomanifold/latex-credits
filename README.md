@@ -120,6 +120,14 @@ the ordering of rows and columns, essentially transposing the statement.
 \usepackage[horizontal]{credits}
 ```
 
+Moreover, if some of the roles are empty (i.e., no contributor) and you want
+to hide them, pass the `skipempty` key:
+
+```latex
+\usepackage[skipempty]{credits}
+```
+
+
 If you are only interested in the textual statement, you can use the
 `separator` package option to slightly adjust its formatting.
 
