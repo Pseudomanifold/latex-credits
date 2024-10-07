@@ -4,7 +4,7 @@
 % proposed by CRediT, the contributor roles taxonomy. The initial
 % version of this taxonomy was inspired by Dan O'Shea (@djoshea).
 %
-% Copyright 2023 Bastian Rieck
+% Copyright 2024 Bastian Rieck, Jannis Born
 %
 % Redistribution and use in source and binary forms, with or without
 % modification, are permitted provided that the following conditions are
@@ -41,6 +41,8 @@
 \RequirePackage{kvoptions}
 \RequirePackage{pgfkeys}
 \RequirePackage{tikz}
+\RequirePackage{xstring}
+\RequirePackage{etoolbox}
 
 \SetupKeyvalOptions{%
   family = CREDITS,
@@ -52,7 +54,7 @@
 
 \DeclareStringOption[black]{role}
 \DeclareStringOption[white]{grid}
-\DeclareStringOption[;]    {separator}
+\DeclareStringOption[;]{separator}
 
 \ProcessKeyvalOptions*
 
@@ -79,12 +81,53 @@
 \let\credits\relax
 
 \newcommand{\credit}[2]{%
+  % Split the contributions and check if each is valid
+  \foreach \entry in {#2} {%
+    \global\def\conceptfound{0}
+    \foreach \concept in \concepts {%
+      \ifthenelse{\equal{\entry}{\concept}}{%
+        \global\def\conceptfound{1}%
+        \breakforeach
+      }{}%
+    }%
+    \ifnum\conceptfound=0\relax%
+      % \entry did not match any concept
+      \IfDecimal{\entry}{%
+        % \entry is a decimal number
+        \pgfmathparse{\entry}%
+        % Now check if it's between 0 and 1 (inclusive)
+        \ifdim\pgfmathresult pt<0pt%
+          % \entry is less than 0
+          \PackageWarning{credits}{Unknown contribution "\entry" by #1. It doesn't match any predefined concept or is not between 0 and 1.}%
+        \else%
+          \ifdim\pgfmathresult pt>1pt%
+            % \entry is greater than 1
+            \PackageWarning{credits}{Unknown contribution "\entry" by #1. It doesn't match any predefined concept or is not between 0 and 1.}%
+          \fi%
+        \fi%
+      }{%
+        % \entry is not a decimal number
+        \PackageWarning{credits}{Unknown contribution "\entry" by #1. It doesn't match any predefined concept.}%
+      }%
+    \fi%
+  }%
+  %   \ifnum\conceptfound=0\relax%
+  %       \PackageWarning{credits}{Unknown contribution "\entry" by #1. It doesn't match any predefined concept.}%
+  %   \fi%
+  % }%
+
+  
+  % Store the credit information
   \ifx\credits\relax%
-  \def\credits{#1/{#2}}%
+    \def\credits{#1/{#2}}%
   \else%
     \xdef\credits{\credits,#1/{#2}}%
   \fi%
 }
+
+
+
+
 
 \tikzset{
     /credits/tile/.style = {
@@ -111,11 +154,9 @@
     /credits/author/.style = {%
       anchor = north west,
       rotate = 45,
-      %
       xshift = -0.50em,
       yshift = -0.25em,
     },%
-    %
     /credits/concept/.style = {%
       anchor = north east,
       xshift = 1.5em, 
@@ -123,8 +164,69 @@
 }
 \fi
 
-
+% Define the credit contributions
 \newcommand{\insertcredits}{%
+  \begin{tikzpicture}[scale = 0.5]
+    \tikzset{%
+      author/.style  = /credits/author,
+      concept/.style = /credits/concept,
+      tile/.style    = /credits/tile,
+    }
+
+    % First draw the author names
+    \foreach \name/\column [count=\authorIndex] in \credits {%
+      \ifCREDITS@horizontal%
+        \node[author] at (0, -\authorIndex) {\name};
+      \else%
+        \node[author] at (\authorIndex, 0) {\name};
+      \fi%
+    }
+    % Next, process each concept
+    \newcounter{row}
+    \foreach \concept [count=\conceptIndex] in \concepts {%
+      \setcounter{CREDITS@concepts}{0}%
+      % Check if any author contributed to this concept
+      \foreach \name/\column in \credits {%
+        \foreach \entry in \column {%
+          % Compare entry to concept
+          \ifx\entry\concept%
+            \addtocounter{CREDITS@concepts}{1}%
+          \fi%
+        }%
+      }%
+      % Add concept if there are contributors or if skipempty is false
+      \pgfmathparse{\value{CREDITS@concepts}>0 || \ifCREDITS@skipempty 0\else 1\fi}%
+      \ifnum\pgfmathresult=1\relax%
+        \addtocounter{row}{1}%
+        \ifCREDITS@horizontal%
+          \node[concept] at (\value{row}, 0) {\concept};
+        \else%
+          \node[concept] at (0, -\value{row}) {\concept};
+        \fi%
+        % Now for each author, check if they contributed to this concept
+        \foreach \name/\column [count=\authorIndex] in \credits {%
+          \foreach \entry in \column {%
+            % Default color
+            \def\cellfill{white}%
+            \ifthenelse{\equal{\entry}{\concept}}{%
+              \def\cellfill{\CREDITS@role}%
+              \breakforeach
+            }{}%
+          \ifCREDITS@horizontal%
+            \node[fill = \cellfill, draw = \CREDITS@grid, tile] at (\value{row}, -\authorIndex) {};
+          \else%
+            \node[fill = \cellfill, draw = \CREDITS@grid, tile] at (\authorIndex, -\value{row}) {};
+          \fi%
+        }%
+        }%
+      \fi%
+    }%
+  \end{tikzpicture}
+}
+
+
+% Continue support for passing information via floats
+\newcommand{\insertcreditsgranular}{%
   \begin{tikzpicture}[scale = 0.5]
     \tikzset{%
       author/.style  = /credits/author,
@@ -197,6 +299,36 @@
 \newcounter{CREDITSADDED@concepts}
 
 \newcommand{\insertcreditsstatement}{%
+  \foreach \concept [count = \i] in \concepts {%
+    \setcounter{CREDITS@concepts}{0}%
+    \setcounter{CREDITSADDED@concepts}{0}%
+    \foreach \name/\column in \credits {%
+      \foreach \entry in \column {%
+        \ifthenelse{\equal{\entry}{\concept}}{%
+          \addtocounter{CREDITS@concepts}{1}%
+        }{}%
+      }%
+    }%
+    \pgfmathparse{\value{CREDITS@concepts}>0 || \ifCREDITS@skipempty 0\else 1\fi}%
+    \ifnum\pgfmathresult=1\relax
+      {\bfseries\concept: }%
+      \foreach \name/\column in \credits {%
+        \foreach \entry in \column {%
+          \ifthenelse{\equal{\entry}{\concept}}{%
+            \ifnum\value{CREDITSADDED@concepts}>0 {, } \fi%
+            \name%
+            \addtocounter{CREDITSADDED@concepts}{1}%
+          }{}%
+        }%
+      }%
+      \ifnum\i<14\relax
+        \CREDITS@separator{}
+      \fi
+    \fi
+  }%
+}
+
+\newcommand{\insertcreditsgranularstatement}{%
   \foreach \concept [count = \i] in \concepts {% 
     \setcounter{CREDITS@concepts}{0}%
     \setcounter{CREDITSADDED@concepts}{0}%
@@ -238,3 +370,5 @@
     \fi
   }%
 }
+
+
