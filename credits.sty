@@ -93,16 +93,13 @@
     \ifnum\conceptfound=0\relax%
       % \entry did not match any concept
       \IfDecimal{\entry}{%
-        % \entry is a decimal number
         \pgfmathparse{\entry}%
         % Now check if it's between 0 and 1 (inclusive)
         \ifdim\pgfmathresult pt<0pt%
-          % \entry is less than 0
-          \PackageWarning{credits}{Unknown contribution "\entry" by #1. It doesn't match any predefined concept or is not between 0 and 1.}%
+          \PackageWarning{credits}{Unknown contribution "\entry" by #1. It doesn't match any predefined concept and is not between 0 and 1.}%
         \else%
           \ifdim\pgfmathresult pt>1pt%
-            % \entry is greater than 1
-            \PackageWarning{credits}{Unknown contribution "\entry" by #1. It doesn't match any predefined concept or is not between 0 and 1.}%
+            \PackageWarning{credits}{Unknown contribution "\entry" by #1. It doesn't match any predefined concept and is not between 0 and 1.}%
           \fi%
         \fi%
       }{%
@@ -111,10 +108,6 @@
       }%
     \fi%
   }%
-  %   \ifnum\conceptfound=0\relax%
-  %       \PackageWarning{credits}{Unknown contribution "\entry" by #1. It doesn't match any predefined concept.}%
-  %   \fi%
-  % }%
 
   
   % Store the credit information
@@ -124,10 +117,6 @@
     \xdef\credits{\credits,#1/{#2}}%
   \fi%
 }
-
-
-
-
 
 \tikzset{
     /credits/tile/.style = {
@@ -370,5 +359,3 @@
     \fi
   }%
 }
-
-
