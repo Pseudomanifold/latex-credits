@@ -79,6 +79,7 @@
 }
 
 \let\credits\relax
+\newcounter{row}
 
 \newcommand{\credit}[2]{%
   % Split the contributions and check if each is valid
@@ -171,7 +172,7 @@
       \fi%
     }
     % Next, process each concept
-    \newcounter{row}
+    \setcounter{row}{0}
     \foreach \concept [count=\conceptIndex] in \concepts {%
       \setcounter{CREDITS@concepts}{0}%
       % Check if any author contributed to this concept
@@ -236,7 +237,7 @@
     }
 
     % Next, count the number of contributors per concept
-    \newcounter{row}
+    \setcounter{row}{0}
     \foreach \concept [count = \i] in \concepts {%
       \setcounter{CREDITS@concepts}{0}%
       \foreach \name/\column in \credits {%
@@ -286,6 +287,11 @@
 \newcounter{CREDITS@concepts}
 % Initialize a counter for the number of already-added authors
 \newcounter{CREDITSADDED@concepts}
+
+\newcommand{\resetcredits}{%
+  \global\let\credits\relax%
+  % Reset any other global variables if necessary
+}
 
 \newcommand{\insertcreditsstatement}{%
   \foreach \concept [count = \i] in \concepts {%
