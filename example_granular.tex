@@ -1,0 +1,42 @@
+\documentclass{article}
+
+\usepackage{xcolor}
+\definecolor{cvprblue}{rgb}{0.21,0.49,0.74}
+\definecolor{lightgrey}{RGB}{150,150,150}
+
+% The CRediT taxonomy
+% - Conceptualization
+% - Data curation
+% - Formal analysis
+% - Funding acquisition
+% - Investigation
+% - Methodology
+% - Project administration
+% - Resources
+% - Software
+% - Supervision
+% - Validation
+% - Visualization
+% - Writing -- original draft
+% - Writing -- review \& editing
+
+\usepackage[role = cvprblue, grid = lightgrey, skipempty, horizontal]{credits}
+
+% You may enter roles with continous values indicating partial
+% contribution. The ordering of the values follows the ordering 
+% of the original taxonomy, i.e.:
+\credit{Doug}  {1,0.5,0,0,0.2,0.8,1,1,1,1,0.1,0,0.9,1}
+\credit{Eve}    {0,1,0,1,0,1,0,1,0,1,0,1,0,1}
+% Values between 0 and 1 will be scaled to be mixed with the background
+% colour (white, unless changed by TikZ). This enables giving *partial*
+% credit to authors (for instance, if someone helped out initially with
+% data curation, but then later went on to another project).
+\credit{Frank}{0,0.5,1,0,0,0,0,0,1,0,0,1,0,0}
+
+\begin{document}
+% Display the credits statement as a table
+\insertcreditsgranular \\
+% Display the credits statement in pure text
+\insertcreditsgranularstatement
+
+\end{document}
