@@ -1,4 +1,4 @@
-# `latex-creisits`: A LaTeX package for generating CRediT (Contributor Role Taxonomy) statements
+# `latex-credits`: A LaTeX package for generating CRediT (Contributor Role Taxonomy) statements
 
 This is a simple LaTeX package for generating contributor role
 statements that can be easily included in a paper. The text of
