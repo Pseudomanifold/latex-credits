@@ -1,4 +1,4 @@
-\documentclass{standalone}
+\documentclass{article}
 
 \usepackage{xcolor}
 
@@ -9,9 +9,7 @@
 % individual authors.
 \usepackage[role = cardinal, grid = lightgrey]{credits}
 
-% The ordering of the values indicates the ordering of the original
-% taxonomy, i.e.:
-%
+% The CRediT taxonomy
 % - Conceptualization
 % - Data curation
 % - Formal analysis
@@ -26,15 +24,24 @@
 % - Visualization
 % - Writing -- original draft
 % - Writing -- review \& editing
-\credit{Alice}  {1,1,1,1,1,1,1,1,1,1,1,1,1,1}
-\credit{Bob}    {0,1,0,1,0,1,0,1,0,1,0,1,0,1}
 
-% Values between 0 and 1 will be scaled to be mixed with the background
-% colour (white, unless changed by TikZ). This enables giving *partial*
-% credit to authors (for instance, if someone helped out initially with
-% data curation, but then later went on to another project).
-\credit{Charlie}{0,0.5,1,0,0,0,0,0,1,0,0,1,0,0}
+
+% Enter the roles for each author as a comma-separated list with
+% exact spelling. Order can be arbitrary.
+\credit{Alice}{Conceptualization, Methodology, Supervision, Project administration, Funding acquisition, Writing -- review \& editing}
+\credit{Bob}{Supervision, Conceptualization, Funding acquisition, Methodology, Resources, Writing -- review \& editing}
+\credit{Charlie}{Software, conceptualization, Formal analysis, Writing -- original draft, Writing -- review \& editing, Validation, Visualization}
+\credit{Doug}{Investigation, Formal analysis, Data curation, Writing -- review \& editing, Supervision}
+\credit{Eve}{Data curation, Investigation, Software, Writing -- original draft}
+\credit{Frank}{Investigation, Data curation, Software, Formal analysis}
+\credit{Grace}{Data curation, Writing -- original draft, Visualization}
+\credit{Heidi}{Investigation, Data curation}
+\credit{Ivan}{Software, Visualization, Writing -- original draft}
+\credit{Judy}{Investigation}
+% Note the typo in Charlie's role "conceptualization", which is lowercase
+% and thus not accepted, instead showing a warning.
 
 \begin{document}
-  \insertcredits
+% Display the credits statement as a table
+\insertcredits \\
 \end{document}
