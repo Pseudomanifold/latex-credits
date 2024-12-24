@@ -51,10 +51,11 @@
 
 \DeclareBoolOption{horizontal}
 \DeclareBoolOption{skipempty}
+\DeclareBoolOption{byauthor}
 
 \DeclareStringOption[black]{role}
 \DeclareStringOption[white]{grid}
-\DeclareStringOption[;]{separator}
+\DeclareStringOption[; ]{separator}
 
 \ProcessKeyvalOptions*
 
@@ -113,9 +114,9 @@
   
   % Store the credit information
   \ifx\credits\relax%
-    \def\credits{#1/{#2}}%
+    \def\credits{{#1}/{#2}}%
   \else%
-    \xdef\credits{\credits,#1/{#2}}%
+    \xdef\credits{\credits,{#1}/{#2}}%
   \fi%
 }
 
@@ -294,33 +295,79 @@
 }
 
 \newcommand{\insertcreditsstatement}{%
-  \foreach \concept [count = \i] in \concepts {%
-    \setcounter{CREDITS@concepts}{0}%
-    \setcounter{CREDITSADDED@concepts}{0}%
-    \foreach \name/\column in \credits {%
-      \foreach \entry in \column {%
-        \ifthenelse{\equal{\entry}{\concept}}{%
-          \addtocounter{CREDITS@concepts}{1}%
-        }{}%
-      }%
-    }%
-    \pgfmathparse{\value{CREDITS@concepts}>0 || \ifCREDITS@skipempty 0\else 1\fi}%
-    \ifnum\pgfmathresult=1\relax
-      {\bfseries\concept: }%
-      \foreach \name/\column in \credits {%
-        \foreach \entry in \column {%
+  \ifCREDITS@byauthor
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %   GROUP BY AUTHOR
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \foreach \name/\roles in \credits {%
+      % We'll accumulate recognized (valid) roles for this author in a temp macro
+      \setcounter{CREDITS@concepts}{0}%
+      \def\CREDITS@tmp{}%
+      %
+      % The user's \credit{Alice}{Role1, Role2, ...} is stored
+      % as \roles = {Role1, Role2, ...}, so we can parse it with a \foreach.
+      \foreach \entry in \roles {%
+        % Compare \entry to each valid concept
+        \foreach \concept in \concepts {%
           \ifthenelse{\equal{\entry}{\concept}}{%
-            \ifnum\value{CREDITSADDED@concepts}>0 {, } \fi%
-            \name%
-            \addtocounter{CREDITSADDED@concepts}{1}%
+            % Found a match => store it
+            \ifnum\value{CREDITS@concepts}>0
+              \xdef\CREDITS@tmp{\CREDITS@tmp, \concept}%
+            \else
+              \xdef\CREDITS@tmp{\concept}%
+            \fi
+            \addtocounter{CREDITS@concepts}{1}%
+            % Stop comparing further concepts
+            \breakforeach
           }{}%
         }%
       }%
-      \ifnum\i<14\relax
-        \CREDITS@separator{}
+      %
+      % Decide whether to print this author
+      \pgfmathparse{\value{CREDITS@concepts}>0 || \ifCREDITS@skipempty 0\else 1\fi}%
+      \ifnum\pgfmathresult=1\relax
+        % This author either has recognized roles or skipempty=false
+        \textbf{\name:}%
+        % If they have recognized roles, print them
+        \ifnum\value{CREDITS@concepts}>0
+          \space \CREDITS@tmp
+        \fi
+        % Separate entire concepts with the chosen separator (default: semicolon)
+        \CREDITS@separator{}%
       \fi
-    \fi
-  }%
+    }%
+  \else
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    % GROUP BY CONCEPT
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \foreach \concept [count = \i] in \concepts {%
+      \setcounter{CREDITS@concepts}{0}%
+      \setcounter{CREDITSADDED@concepts}{0}%
+      \foreach \name/\column in \credits {%
+        \foreach \entry in \column {%
+          \ifthenelse{\equal{\entry}{\concept}}{%
+            \addtocounter{CREDITS@concepts}{1}%
+          }{}%
+        }%
+      }%
+      \pgfmathparse{\value{CREDITS@concepts}>0 || \ifCREDITS@skipempty 0\else 1\fi}%
+      \ifnum\pgfmathresult=1\relax
+        {\bfseries\concept: }%
+        \foreach \name/\column in \credits {%
+          \foreach \entry in \column {%
+            \ifthenelse{\equal{\entry}{\concept}}{%
+              \ifnum\value{CREDITSADDED@concepts}>0 {, } \fi%
+              \name%
+              \addtocounter{CREDITSADDED@concepts}{1}%
+            }{}%
+          }%
+        }%
+        \ifnum\i<14\relax
+          \CREDITS@separator{}%
+        \fi
+      \fi
+    }%
+  \fi
 }
 
 \newcommand{\insertcreditsgranularstatement}{%

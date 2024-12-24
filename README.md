@@ -120,6 +120,8 @@ This results in the following output:
 Partial contribution is also supported, see [example_granular.tex](example_granular.tex):
 ```latex
 ...
+\definecolor{cvprblue}{rgb}{0.21,0.49,0.74}
+\definecolor{lightgrey}{RGB}{150,150,150}
 \usepackage[role = cvprblue, grid = lightgrey, skipempty, horizontal]{credits}
 
 % You may enter roles with continous values indicating partial
@@ -136,18 +138,27 @@ Partial contribution is also supported, see [example_granular.tex](example_granu
 
 ![Example contributor taxonomy granular contributions](assets/example_granular.png)
 
-By passing the `horizontal` key when loading the package, you can switch
-the ordering of rows and columns, essentially transposing the statement.
+By passing the boolean `horizontal` key when loading the package, you can switch
+the ordering of rows and columns, essentially transposing the table.
 
 ```latex
 \usepackage[horizontal]{credits}
 ```
 
 Moreover, if some of the roles are empty (i.e., no contributor) and you want
-to hide them, pass the `skipempty` key:
+to hide them, pass the boolean `skipempty` key:
 
 ```latex
 \usepackage[skipempty]{credits}
+```
+
+When using `\insertcreditsstatement` the contributions are grouped by **role**.
+If you want to group them by **author** instead, pass the boolean `byauthor` key:
+
+```latex
+\usepackage[byauthor]{credits}
+...
+\insertcreditsstatement
 ```
 
 If you want to display two distinct statements in the same document:
