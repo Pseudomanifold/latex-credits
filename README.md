@@ -120,6 +120,8 @@ This results in the following output:
 Partial contribution is also supported, see [example_granular.tex](example_granular.tex):
 ```latex
 ...
+\definecolor{cvprblue}{rgb}{0.21,0.49,0.74}
+\definecolor{lightgrey}{RGB}{150,150,150}
 \usepackage[role = cvprblue, grid = lightgrey, skipempty, horizontal]{credits}
 
 % You may enter roles with continous values indicating partial
