@@ -114,9 +114,9 @@
   
   % Store the credit information
   \ifx\credits\relax%
-    \def\credits{{#1}/{#2}}%
+    \protected@xdef\credits{{#1}/{#2}}%
   \else%
-    \xdef\credits{\credits,{#1}/{#2}}%
+    \protected@xdef\credits{\credits,{#1}/{#2}}%
   \fi%
 }
 
