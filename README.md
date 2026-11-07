@@ -10,6 +10,31 @@ Download [credits.sty](credits.sty) from this repository (or clone the
 whole repository) and put it in your project. You may load the package
 using `\usepackage{credits}`.
 
+## Documentation and CTAN upload
+
+The [manual source](credits-doc.tex) covers named roles, numeric contributions,
+package options, and text statements. To build the PDF, run:
+
+```sh
+make doc
+```
+
+This needs `make` and a TeX installation with `pdflatex` and the package's
+dependencies: `ifthen`, `kvoptions`, `pgfkeys`, `tikz`, `xstring`, and `etoolbox`.
+The manual also uses `fontenc`, `geometry`, `array`, and `hyperref`.
+The result is `build/credits-doc.pdf`.
+
+To prepare an upload archive, run:
+
+```sh
+make ctan
+```
+
+This also needs `zip`. The archive at `build/credits.zip` contains a `credits/`
+folder with the package, manual PDF and source, examples, README, licence, and
+README images. It excludes TeX build intermediates. The package maintainer
+submits this archive through the [CTAN upload form](https://ctan.org/upload).
+
 ## Defining Authors
 
 Use the `\credit` command to define an author and their contributions to
@@ -167,7 +192,7 @@ If you want to display two distinct statements in the same document:
 \insertcredits % Insert first statement
 \resetcredits % Delete contributions
 ... % use \credit to add second block of contributions
-\insertcredits % Insert second statement, this time a granular one
+\insertcreditsgranular % Insert second statement, this time a granular one
 ```
 
 If you are only interested in the textual statement, you can use the

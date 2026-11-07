@@ -1,0 +1,175 @@
+\documentclass[a4paper,11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[margin=25mm]{geometry}
+\usepackage{array}
+\usepackage{hyperref}
+\usepackage[skipempty]{credits}
+
+\title{The \texttt{credits} package}
+\author{Bastian Rieck and Jannis Born}
+\date{1 November 2026}
+
+\begin{document}
+\maketitle
+
+The \texttt{credits} package produces contributor statements and heatmaps
+using the Contributor Role Taxonomy (CRediT). It supports named roles and
+numeric contribution values. The taxonomy is described at
+\url{https://credit.niso.org/}.
+
+\section{Installation}
+
+Copy \texttt{credits.sty} into the directory containing your document.
+Load it in the preamble:
+\begin{verbatim}
+\usepackage{credits}
+\end{verbatim}
+The package requires \texttt{ifthen}, \texttt{kvoptions}, \texttt{pgfkeys},
+\texttt{tikz}, \texttt{xstring}, and \texttt{etoolbox}. These packages are
+available in TeX Live and MiKTeX.
+
+\section{Named roles}
+
+Add each contributor with \verb|\credit{name}{roles}|. Separate roles with
+commas. Their order is arbitrary, but their spelling and capitalization
+must match the taxonomy in Section~\ref{sec:roles}. Write an ampersand as
+\verb|\&|.
+
+\begin{verbatim}
+\credit{Marie Curie}{Investigation, Methodology}
+\credit{Michael Faraday}{Investigation, Visualization}
+\credit{Ada Lovelace}{Software, Writing -- original draft}
+
+\insertcreditsstatement
+\end{verbatim}
+
+\credit{Marie Curie}{Investigation, Methodology}
+\credit{Michael Faraday}{Investigation, Visualization}
+\credit{Ada Lovelace}{Software, Writing -- original draft}
+\noindent\insertcreditsstatement
+
+\medskip
+Use \verb|\insertcredits| to show the same contributions as a heatmap.
+The command inserts a \texttt{tikzpicture}; it does not create a float.
+Short contributor labels can make the heatmap easier to fit on a page:
+
+\begin{verbatim}
+\resetcredits
+\credit{M.C.}{Investigation, Methodology}
+\credit{M.F.}{Investigation, Visualization}
+\credit{A.L.}{Software, Writing -- original draft}
+\insertcredits
+\end{verbatim}
+
+\resetcredits
+\credit{M.C.}{Investigation, Methodology}
+\credit{M.F.}{Investigation, Visualization}
+\credit{A.L.}{Software, Writing -- original draft}
+\begin{center}
+\insertcredits
+\end{center}
+
+\section{Numeric contributions}
+
+Alternatively, give each contributor 14 numbers between 0 and 1.
+The positions follow the taxonomy order in Section~\ref{sec:roles}.
+Zero means no contribution; larger values produce darker cells.
+Use the granular commands with numeric lists:
+
+\begin{verbatim}
+\resetcredits
+\credit{M.C.}{1,0.5,0,0,1,1,0,0,0,0,0,0,0,0}
+\credit{A.L.}{0,0,0,0,0,0,0,0,1,0,0,0.5,1,0}
+\insertcreditsgranular
+\insertcreditsgranularstatement
+\end{verbatim}
+
+\resetcredits
+\credit{M.C.}{1,0.5,0,0,1,1,0,0,0,0,0,0,0,0}
+\credit{A.L.}{0,0,0,0,0,0,0,0,1,0,0,0.5,1,0}
+\begin{center}
+\insertcreditsgranular
+\end{center}
+\noindent\insertcreditsgranularstatement
+
+\medskip
+The numeric text statement treats every nonzero value as a contribution;
+it does not print the magnitude. Keep named roles and numeric lists in
+separate blocks, using \verb|\resetcredits| between them.
+
+\section{Options and commands}
+
+Pass options when loading the package, for example:
+\begin{verbatim}
+\usepackage[role=blue,grid=gray,skipempty,horizontal]{credits}
+\end{verbatim}
+
+\noindent\begin{tabular}{@{}lp{0.72\linewidth}@{}}
+\texttt{role} & Cell colour for contributions; default: black.\\
+\texttt{grid} & Cell border colour; default: white.\\
+\texttt{horizontal} & Put roles in columns and contributors in rows.\\
+\texttt{skipempty} & Omit roles with no contributions. For named text grouped
+  by author, omit contributors with no recognized roles.\\
+\texttt{byauthor} & Group named text statements by author instead of role.\\
+\texttt{separator} & Separate text entries with this value; default: a
+  semicolon followed by a space.\\
+\end{tabular}
+
+\medskip
+Boolean options are false unless specified. This manual loads
+\texttt{skipempty}, so its heatmaps and statements show only used roles.
+Define custom colours with \verb|\definecolor| before loading the package.
+For example, \verb|separator={\newline}| puts each text entry on a new line.
+
+\begin{description}
+\item[\texttt{\textbackslash credit\{name\}\{roles or numbers\}}]
+  Add a contributor. Unknown named roles and out-of-range numbers produce
+  package warnings.
+\item[\texttt{\textbackslash insertcredits}]
+  Draw a heatmap from named roles.
+\item[\texttt{\textbackslash insertcreditsstatement}]
+  Print a text statement from named roles.
+\item[\texttt{\textbackslash insertcreditsgranular}]
+  Draw a heatmap from numeric contributions.
+\item[\texttt{\textbackslash insertcreditsgranularstatement}]
+  Print a text statement from numeric contributions, by role.
+\item[\texttt{\textbackslash resetcredits}]
+  Remove all stored contributors before starting another statement.
+\end{description}
+
+Names can contain escaped LaTeX characters such as \verb|\_| and
+\verb|\$|. The package retains contributors until \verb|\resetcredits|
+is called; printing a statement does not clear them.
+
+\section{Taxonomy order}\label{sec:roles}
+
+Named roles use the spelling below. Numeric lists use the same order.
+\begin{enumerate}
+\item Conceptualization
+\item Data curation
+\item Formal analysis
+\item Funding acquisition
+\item Investigation
+\item Methodology
+\item Project administration
+\item Resources
+\item Software
+\item Supervision
+\item Validation
+\item Visualization
+\item \verb|Writing -- original draft|
+\item \verb|Writing -- review \& editing|
+\end{enumerate}
+
+\section{Examples and licence}
+
+The distribution includes \texttt{example.tex} (named heatmap),
+\texttt{example\_granular.tex} (numeric heatmap and text), and
+\texttt{example\_text.tex} (numeric text). Compile them with
+\texttt{pdflatex} from the directory containing \texttt{credits.sty}.
+
+The package and this documentation are distributed under the BSD
+3-Clause licence; see \texttt{LICENSE.md}. Source and issue tracker:
+\url{https://github.com/Pseudomanifold/latex-credits}.
+
+\end{document}
