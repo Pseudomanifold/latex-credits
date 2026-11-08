@@ -218,6 +218,7 @@
 
 % Continue support for passing information via floats
 \newcommand{\insertcreditsgranular}{%
+  \ifx\credits\relax\else%
   \begin{tikzpicture}[scale = 0.5]
     \tikzset{%
       author/.style  = /credits/author,
@@ -279,6 +280,7 @@
         }%
     }%
   \end{tikzpicture}
+  \fi%
 }
 
 
@@ -371,6 +373,7 @@
 }
 
 \newcommand{\insertcreditsgranularstatement}{%
+  \ifx\credits\relax\else%
   \foreach \concept [count = \i] in \concepts {% 
     \setcounter{CREDITS@concepts}{0}%
     \setcounter{CREDITSADDED@concepts}{0}%
@@ -411,4 +414,5 @@
     {}%
     \fi
   }%
+  \fi%
 }
