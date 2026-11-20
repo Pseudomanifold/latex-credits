@@ -74,19 +74,19 @@ To add a statement about these contributions to the text, use the
 a `tikzpicture` environment so it can be added in-place; it does not
 make use of any floats. This is how the statement will look by default:
 
-![Example contributor roles with default colours](assets/example_default.png)
+![Example contributor roles with default colours](assets/contributor-credits-example-default.png)
 
 There is also the option to generate a text statement about
 contributors. Just use the `\insertcreditsstatement` command. Here is
 how such a statement will be formatted (notice that author names have
 been slightly changed):
 
-![Example contributor text statement](assets/example_text_default.png)
+![Example contributor text statement](assets/contributor-credits-example-text-default.png)
 
 ## Example
 
 The package is readily usable and permits some customisation (this
-example can also be found in [example.tex](example.tex)):
+example can also be found in [contributor-credits-example.tex](contributor-credits-example.tex)):
 
 ```latex
 \documentclass{article}
@@ -140,9 +140,9 @@ example can also be found in [example.tex](example.tex)):
 
 This results in the following output:
 
-![Example contributor taxonomy with custom colours](assets/example_custom.png)
+![Example contributor taxonomy with custom colours](assets/contributor-credits-example-custom.png)
 
-Partial contribution is also supported, see [example_granular.tex](example_granular.tex):
+Partial contribution is also supported, see [contributor-credits-example-granular.tex](contributor-credits-example-granular.tex):
 ```latex
 ...
 \definecolor{cvprblue}{rgb}{0.21,0.49,0.74}
@@ -161,7 +161,7 @@ Partial contribution is also supported, see [example_granular.tex](example_granu
 \credit{Frank}{0,0.5,1,0,0,0,0,0,1,0,0,1,0,0}
 ```
 
-![Example contributor taxonomy granular contributions](assets/example_granular.png)
+![Example contributor taxonomy granular contributions](assets/contributor-credits-example-granular.png)
 
 By passing the boolean `horizontal` key when loading the package, you can switch
 the ordering of rows and columns, essentially transposing the table.
@@ -211,7 +211,7 @@ If you are only interested in the textual statement, you can use the
 Use `\insertcreditsstatement` to place your textual statement anywhere.
 Similar to the visual statement, this environment does not create a new
 group or float; it can be readily added to *any* text environment. You
-can find the full example in [example_text.tex](example_text.tex).
+can find the full example in [contributor-credits-example-text.tex](contributor-credits-example-text.tex).
 
 ## FAQ
 

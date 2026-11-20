@@ -8,7 +8,7 @@ doc:
 ctan: doc
 	rm -rf build/contributor-credits
 	mkdir -p build/contributor-credits/assets
-	cp contributor-credits.sty contributor-credits-doc.tex README.md LICENSE.md Makefile CITATION.cff example.tex example_granular.tex example_text.tex build/contributor-credits/
+	cp contributor-credits.sty contributor-credits-doc.tex README.md LICENSE.md Makefile CITATION.cff contributor-credits-example.tex contributor-credits-example-granular.tex contributor-credits-example-text.tex build/contributor-credits/
 	cp assets/*.png build/contributor-credits/assets/
 	cp build/contributor-credits-doc.pdf build/contributor-credits/
 	rm -f build/contributor-credits.zip
