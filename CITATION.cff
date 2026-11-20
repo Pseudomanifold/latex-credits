@@ -3,6 +3,8 @@
 
 cff-version: 1.2.0
 title: latex-credits
+version: 1.0.1
+date-released: '2026-11-20'
 message: >-
   If you use this software, please cite it using the
   metadata from this file.
