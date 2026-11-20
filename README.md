@@ -6,13 +6,13 @@ the roles follows [CRediT](https://credit.niso.org/).
 
 ## Installation and Usage
 
-Download [credits.sty](credits.sty) from this repository (or clone the
+Download [contributor-credits.sty](contributor-credits.sty) from this repository (or clone the
 whole repository) and put it in your project. You may load the package
-using `\usepackage{credits}`.
+using `\usepackage{contributor-credits}`.
 
 ## Documentation and CTAN upload
 
-The [manual source](credits-doc.tex) covers named roles, numeric contributions,
+The [manual source](contributor-credits-doc.tex) covers named roles, numeric contributions,
 package options, and text statements. To build the PDF, run:
 
 ```sh
@@ -22,7 +22,7 @@ make doc
 This needs `make` and a TeX installation with `pdflatex` and the package's
 dependencies: `ifthen`, `kvoptions`, `pgfkeys`, `tikz`, `xstring`, and `etoolbox`.
 The manual also uses `fontenc`, `geometry`, `array`, and `hyperref`.
-The result is `build/credits-doc.pdf`.
+The result is `build/contributor-credits-doc.pdf`.
 
 To prepare an upload archive, run:
 
@@ -30,7 +30,7 @@ To prepare an upload archive, run:
 make ctan
 ```
 
-This also needs `zip`. The archive at `build/credits.zip` contains a `credits/`
+This also needs `zip`. The archive at `build/contributor-credits.zip` contains a `contributor-credits/`
 folder with the package, manual PDF and source, examples, README, licence, and
 README images. It excludes TeX build intermediates. The package maintainer
 submits this archive through the [CTAN upload form](https://ctan.org/upload).
@@ -98,7 +98,7 @@ example can also be found in [example.tex](example.tex)):
 
 % You can configure the colour of the grid and the respective roles of
 % individual authors.
-\usepackage[role = cardinal, grid = lightgrey]{credits}
+\usepackage[role = cardinal, grid = lightgrey]{contributor-credits}
 
 % The CRediT taxonomy
 % - Conceptualization
@@ -147,7 +147,7 @@ Partial contribution is also supported, see [example_granular.tex](example_granu
 ...
 \definecolor{cvprblue}{rgb}{0.21,0.49,0.74}
 \definecolor{lightgrey}{RGB}{150,150,150}
-\usepackage[role = cvprblue, grid = lightgrey, skipempty, horizontal]{credits}
+\usepackage[role = cvprblue, grid = lightgrey, skipempty, horizontal]{contributor-credits}
 
 % You may enter roles with continous values indicating partial
 % contribution. The ordering of the values follows the ordering
@@ -167,21 +167,21 @@ By passing the boolean `horizontal` key when loading the package, you can switch
 the ordering of rows and columns, essentially transposing the table.
 
 ```latex
-\usepackage[horizontal]{credits}
+\usepackage[horizontal]{contributor-credits}
 ```
 
 Moreover, if some of the roles are empty (i.e., no contributor) and you want
 to hide them, pass the boolean `skipempty` key:
 
 ```latex
-\usepackage[skipempty]{credits}
+\usepackage[skipempty]{contributor-credits}
 ```
 
 When using `\insertcreditsstatement` the contributions are grouped by **role**.
 If you want to group them by **author** instead, pass the boolean `byauthor` key:
 
 ```latex
-\usepackage[byauthor]{credits}
+\usepackage[byauthor]{contributor-credits}
 ...
 \insertcreditsstatement
 ```
@@ -201,11 +201,11 @@ If you are only interested in the textual statement, you can use the
 ```latex
 % Default: separate individual concepts/roles by a semicolon. This seems
 % to be the de facto standard endorsed by many publishers.
-\usepackage[separator = {;}]{credits}
+\usepackage[separator = {;}]{contributor-credits}
 
 % This would create a list of contributions. Personally, I do not like
 % this format too much.
-\usepackage[separator = {\newline}]{credits}
+\usepackage[separator = {\newline}]{contributor-credits}
 ```
 
 Use `\insertcreditsstatement` to place your textual statement anywhere.

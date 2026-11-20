@@ -1,4 +1,4 @@
-% credits.sty
+% contributor-credits.sty
 %
 % This package permits creating simple contributor statements, as
 % proposed by CRediT, the contributor roles taxonomy. The initial
@@ -35,7 +35,7 @@
 % OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{credits}[2026/11/01 LaTeX package for contributor statements following CRediT, the contributor roles taxonomy]
+\ProvidesPackage{contributor-credits}[2026/11/01 LaTeX package for contributor statements following CRediT, the contributor roles taxonomy]
 
 \RequirePackage{ifthen}
 \RequirePackage{kvoptions}
@@ -98,15 +98,15 @@
         \pgfmathparse{\entry}%
         % Now check if it's between 0 and 1 (inclusive)
         \ifdim\pgfmathresult pt<0pt%
-          \PackageWarning{credits}{Unknown contribution "\entry" by #1. It doesn't match any predefined concept and is not between 0 and 1.}%
+          \PackageWarning{contributor-credits}{Unknown contribution "\entry" by #1. It doesn't match any predefined concept and is not between 0 and 1.}%
         \else%
           \ifdim\pgfmathresult pt>1pt%
-            \PackageWarning{credits}{Unknown contribution "\entry" by #1. It doesn't match any predefined concept and is not between 0 and 1.}%
+            \PackageWarning{contributor-credits}{Unknown contribution "\entry" by #1. It doesn't match any predefined concept and is not between 0 and 1.}%
           \fi%
         \fi%
       }{%
         % \entry is not a decimal number
-        \PackageWarning{credits}{Unknown contribution "\entry" by #1. It doesn't match any predefined concept.}%
+        \PackageWarning{contributor-credits}{Unknown contribution "\entry" by #1. It doesn't match any predefined concept.}%
       }%
     \fi%
   }%
