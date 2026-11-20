@@ -11,7 +11,7 @@ message: >-
 type: software
 authors:
   - given-names: Bastian
-    family-names: Rieck
+    family-names: Grossenbacher-Rieck
     email: bastian@rieck.me
     orcid: 'https://orcid.org/0000-0003-4335-0302'
 repository-code: 'https://github.com/Pseudomanifold/latex-credits'
