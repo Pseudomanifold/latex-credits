@@ -1,4 +1,4 @@
-Copyright (C) 2023 Bastian Rieck
+Copyright (C) 2023–2026 Jannis Born and Bastian Grossenbacher-Rieck
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
