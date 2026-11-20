@@ -31,8 +31,9 @@ make ctan
 ```
 
 This also needs `zip`. The archive at `build/contributor-credits.zip` contains a `contributor-credits/`
-folder with the package, manual PDF and source, examples, README, licence, and
-README images. It excludes TeX build intermediates. The package maintainer
+folder with the package, manual PDF and source, example sources and their compiled
+PDFs, README, licence, and README images. To build only the example PDFs, run
+`make examples`. It excludes TeX build intermediates. The package maintainer
 submits this archive through the [CTAN upload form](https://ctan.org/upload).
 
 ## Defining Authors
